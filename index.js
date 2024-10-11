@@ -3,12 +3,12 @@ const puppeteer = require("puppeteer");
 let pages = [];
 let browsers = [];
 let browserCount = 1;
-let pageCount = 5;
+let pageCount = 10;
 let sleepTime = 500;
 let machineName = "J";
-let meetingId = "a";
-let isDev = true;
-let url = isDev ? "http://192.168.7.214:5173/" : "https://sfualpha.vconsol.com/";
+let meetingId = "1000";
+let alpha = false
+let url = alpha ? "https://sfualpha.vconsol.com/" : "http://192.168.2.107:5173/"
 
 function sleep(time) {
   return new Promise(function (resolve) {
@@ -24,7 +24,8 @@ async function createBrowser() {
       "--use-fake-ui-for-media-stream",
       "--no-sandbox",
       "--window-size=1280,720",
-      "--unsafely-treat-insecure-origin-as-secure=http://192.168.7.214:5173/"
+      `--unsafely-treat-insecure-origin-as-secure=${url}`,
+      '--use-file-for-fake-video-capture=video.y4m'
     ],
   });
   browsers.push(browser);
@@ -44,7 +45,7 @@ async function openPage(browser, browserNumber, pageNumber) {
     await page.waitForSelector("#join-conference");
     await page.type("#display-name", name);
     await page.type("#meeting-id", meetingId);
-    await page.click("#doRenderVideo");
+    //await page.click("#doRenderVideo");
     await page.click("#join-conference");
 
     console.log(`Joined conference with display name: ${name}`);
